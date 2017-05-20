@@ -20,16 +20,19 @@ class DatabaseHelper(object):
 
 
 
-    def kkb_getter(self, product_id):
+    def kkb_getter(self, product_id,show_type):
         try:
-            sql = "SELECT * from kkb_data where product_id = '{prod_id}' and  is_active=1".format(prod_id=product_id)
-            db = self.db_config("mydb")
-            cursor = db.cursor()
-            cursor.execute(sql)
-            row = cursor.rowcount
-            if int(row) == 0:
-                return json.dumps({'Error' : 'No user Found'})
-            return int(row)
+            if show_type == 0:
+                sql = "SELECT * from kkb_data where product_id = '{prod_id}' and  is_active=1".format(prod_id=product_id)
+                db = self.db_config("mydb")
+                cursor = db.cursor()
+                cursor.execute(sql)
+                row = cursor.rowcount
+                if int(row) == 0:
+                    return json.dumps({'Error' : 'No user Found'})
+                return int(row)
+            else:
+                return RedisHelper().redis_get_data(product_id)
         except:
             raise Exception("Get Function Error")
 
