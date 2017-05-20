@@ -23,7 +23,7 @@ def kkb_get_api():
         pid = content["product_id"]
         show_type = content["show_type"]
         if pid is not None and show_type is not None:
-            result = DatabaseHelper().kkb_getter(pid)
+            result = DatabaseHelper().kkb_getter(pid, show_type)
             return json.dumps({"count": str(result)})
 
 

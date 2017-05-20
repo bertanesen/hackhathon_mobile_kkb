@@ -17,11 +17,10 @@ class DatabaseHelper(object):
             cursor = db.cursor()
             cursor.execute(sql)
             db.commit()
-
+            RedisHelper().redis_counter(product_id)
 
 
     def kkb_getter(self, product_id,show_type):
-        try:
             if show_type == 0:
                 sql = "SELECT * from kkb_data where product_id = '{prod_id}' and  is_active=1".format(prod_id=product_id)
                 db = self.db_config("mydb")
@@ -32,9 +31,11 @@ class DatabaseHelper(object):
                     return json.dumps({'Error' : 'No user Found'})
                 return int(row)
             else:
-                return RedisHelper().redis_get_data(product_id)
-        except:
-            raise Exception("Get Function Error")
+                year = datetime.datetime.now().strftime('%Y')
+                month = datetime.datetime.now().strftime('%m')
+                day = datetime.datetime.now().strftime('%d')
+                key = "{}-{}_{}_{}".format(product_id, year, month, day)
+                return RedisHelper().redis_init().get(key)
 
     def kkb_update(self, udid, product_id, session_duration):
         try:
@@ -42,7 +43,7 @@ class DatabaseHelper(object):
 
             sql = "UPDATE `kkb_data` SET `session_duration` = {session_d}, is_active = 0, updated_date = '{updated}' " \
                   "where udid= '{udid}' and " \
-                  "product_id = '{product_id}'".format(session_d = session_duration,
+                  "product_id = '{product_id}' order by id desc LIMIT 1".format(session_d = session_duration,
                                                      updated = time_now,
                                                      udid = udid,
                                                      product_id = product_id)
