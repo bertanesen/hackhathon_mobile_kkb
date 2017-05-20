@@ -18,6 +18,11 @@ class DatabaseHelper(object):
         sql = ""
         data = self.sql_executer(sql)
 
+    def kkb_setter(self, udid, product_id):
+        sql = ""
+        data = self.sql_executer(sql)
+
+
 
 
 
