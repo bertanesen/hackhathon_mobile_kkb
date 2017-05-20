@@ -1,5 +1,6 @@
 import MySQLdb
 import datetime
+
 class DatabaseHelper(object):
 
 
@@ -8,39 +9,31 @@ class DatabaseHelper(object):
         db = MySQLdb.connect(db_host, "root", "mobilestaging123", db_name)
         return db
 
-    # def sql_executer(self,sql):
-    #     cur =self.db_config("mydb")
-    #     cur.execute(sql)
-    #     return cur.fetchall()
-    #
-    # def kkb_getter(self,product_id):
-    #     sql = "select count(*) as total from kkb_data where is_active = 1"
-    #     self.sql_executer(sql)
-
     def kkb_setter(self, udid, product_id):
         try:
             sql = "INSERT INTO `kkb_data` (`udid`, `product_id`) VALUES " \
                   "('{udid}', '{pid}') ".format(udid=udid, pid= product_id)
             db = self.db_config("mydb")
-            print sql
             cursor = db.cursor()
             cursor.execute(sql)
             db.commit()
         except RuntimeError:
             print "Error"
 
-    def kkb_getter(self, udid, product_id):
+    def kkb_getter(self, product_id):
         try:
-            sql = "SELECT "
+            sql = "SELECT * from kkb_data where product_id = '{prod_id}' and  is_active=1".format(prod_id=product_id)
             db = self.db_config("mydb")
             print sql
             cursor = db.cursor()
             cursor.execute(sql)
-            db.commit()
+            row = cursor.rowcount
+            print int(row)
+            return int (row)
         except RuntimeError:
-            print "Error"
+            print "Get Error"
 
-    def kkb_update(self,  udid, product_id,session_duration):
+    def kkb_update(self, udid, product_id, session_duration):
         try:
             time =datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 

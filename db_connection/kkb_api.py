@@ -1,6 +1,7 @@
 from flask import request, url_for
 from flask.ext.api import FlaskAPI, status, exceptions
 from kkb_data import DatabaseHelper
+import json
 
 app = FlaskAPI(__name__)
 
@@ -21,13 +22,11 @@ def kkb_set_api():
 def kkb_get_api():
     if request.method == 'POST':
         content = request.get_json()
-        udid = content["udid"]
-        print udid
         pid = content["product_id"]
-        print pid
-        if udid is not None and pid is not None:
-            DatabaseHelper().kkb_getter(udid,pid)
-        return content
+        if pid is not None:
+            result = DatabaseHelper().kkb_getter(pid)
+            return json.dumps({"count": str(result)})
+
 
 @app.route('/kkb/update_data', methods=['POST'])
 def kkb_update_api():
