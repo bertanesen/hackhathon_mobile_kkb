@@ -1,5 +1,6 @@
 import MySQLdb
 import datetime
+import json
 
 class DatabaseHelper(object):
 
@@ -18,18 +19,18 @@ class DatabaseHelper(object):
             cursor.execute(sql)
             db.commit()
         except RuntimeError:
-            print "Error"
+            print "Set Error"
 
     def kkb_getter(self, product_id):
         try:
             sql = "SELECT * from kkb_data where product_id = '{prod_id}' and  is_active=1".format(prod_id=product_id)
             db = self.db_config("mydb")
-            print sql
             cursor = db.cursor()
             cursor.execute(sql)
             row = cursor.rowcount
-            print int(row)
-            return int (row)
+            if int(row) == 0:
+                return json.dumps({'Error' : 'No user Found'})
+            return int(row)
         except RuntimeError:
             print "Get Error"
 
