@@ -1,6 +1,4 @@
-import MySQLdb
-import datetime
-import json
+from modules import *
 
 class DatabaseHelper(object):
 
@@ -18,8 +16,8 @@ class DatabaseHelper(object):
             cursor = db.cursor()
             cursor.execute(sql)
             db.commit()
-        except RuntimeError:
-            print "Set Error"
+        except:
+            raise Exception("Set Function Error")
 
     def kkb_getter(self, product_id):
         try:
@@ -31,26 +29,25 @@ class DatabaseHelper(object):
             if int(row) == 0:
                 return json.dumps({'Error' : 'No user Found'})
             return int(row)
-        except RuntimeError:
-            print "Get Error"
+        except:
+            raise Exception("Get Function Error")
 
     def kkb_update(self, udid, product_id, session_duration):
         try:
-            time =datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            time_now =datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
             sql = "UPDATE `kkb_data` SET `session_duration` = {session_d}, is_active = 0, updated_date = '{updated}' " \
                   "where udid= '{udid}' and " \
                   "product_id = '{product_id}'".format(session_d = session_duration,
-                                                     updated = time,
+                                                     updated = time_now,
                                                      udid = udid,
                                                      product_id = product_id)
-            print sql
             db = self.db_config("mydb")
             cursor = db.cursor()
             cursor.execute(sql)
             db.commit()
-        except RuntimeError:
-            print "Error"
+        except:
+            raise Exception("Update Function Error")
 
 
 
