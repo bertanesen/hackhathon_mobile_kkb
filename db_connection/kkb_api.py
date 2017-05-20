@@ -1,16 +1,19 @@
 from flask import request, url_for
 from flask.ext.api import FlaskAPI, status, exceptions
 from kkb_data import DatabaseHelper
+
 app = FlaskAPI(__name__)
 
 
 @app.route('/kkb/data', methods=['POST'])
 def kkb_set_api():
     if request.method == 'POST':
-        udid = request.json["udid"]
-        p_id = request.json["product_id"]
-        if udid is not None and product_id is not None:
-            DatabaseHelper.kkb_setter(udid, product_id)
+        content = request.get_json()
+        return content
+        udid = content["udid"]
+        pid = content["product_id"]
+        if udid is not None and pid is not None:
+            DatabaseHelper().kkb_setter(udid,pid)
 
 
 
