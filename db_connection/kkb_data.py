@@ -1,4 +1,5 @@
 from modules import *
+from redis_helper import RedisHelper
 
 class DatabaseHelper(object):
 
@@ -9,15 +10,15 @@ class DatabaseHelper(object):
         return db
 
     def kkb_setter(self, udid, product_id):
-        try:
+
             sql = "INSERT INTO `kkb_data` (`udid`, `product_id`) VALUES " \
                   "('{udid}', '{pid}') ".format(udid=udid, pid= product_id)
             db = self.db_config("mydb")
             cursor = db.cursor()
             cursor.execute(sql)
             db.commit()
-        except:
-            raise Exception("Set Function Error")
+
+
 
     def kkb_getter(self, product_id):
         try:

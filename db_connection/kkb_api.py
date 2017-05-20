@@ -1,7 +1,7 @@
+from modules import *
 from flask import request, url_for
 from flask.ext.api import FlaskAPI, status, exceptions
 from kkb_data import DatabaseHelper
-from modules import *
 
 app = FlaskAPI(__name__)
 
