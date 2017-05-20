@@ -18,36 +18,29 @@ import java.io.InputStreamReader;
  * Created by ip on 20-May-17.
  */
 
-public class Insider extends  Type{
+public class Insider extends Instance{
 
-    public static String sendPost(JSONObject paramaters){
+
+    public static String sendPost(JSONObject paramaters,String urlParamter){
         InputStream inputStream = null;
         String result = "";
-        String url = "";
+        String url = "http://9ee6fdf5.ngrok.io" + urlParamter;
 
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
             String json = "";
             json = paramaters.toString();
-            // 5. set json to StringEntity
             StringEntity se = new StringEntity(json);
-
-            // 6. set httpPost Entity
             httpPost.setEntity(se);
-
-            // 7. Set some headers to inform server about the type of the content
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
-
-            // 8. Execute POST request to the given URL
             HttpResponse httpResponse = httpclient.execute(httpPost);
             inputStream = httpResponse.getEntity().getContent();
             if(inputStream != null)
                 result = convertInputStreamToString(inputStream);
             else
                 result = "Did not work!";
-
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
