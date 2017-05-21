@@ -2,9 +2,8 @@ package com.insider.kkb;
 
 import android.app.Activity;
 import android.widget.Toast;
-
 import org.json.JSONException;
-
+import java.io.UnsupportedEncodingException;
 
 
 /**
@@ -12,34 +11,41 @@ import org.json.JSONException;
  */
 
 public class InsiderHack  extends Helper {
-    Insider insider = new Insider();
+
+    public final static InsiderHack insdr = new InsiderHack();
+    private InsiderHack() {
+    }
     private long startTime;
+    Insider insider = new Insider();
+
     public void kkbInit(Activity activity , String productId , int showType) throws JSONException {
         try {
+            startTime = System.currentTimeMillis();
             currenActivity = activity;
             setAndroidId();
             setProductId(productId);
             showTypeDefault = showType;
-            insider.sendPost(insider.makeJsonData(udid,productId,showTypeDefault,0),"/kkb/set_data");
+            insider.BackgroundSender(insider.makeJsonData(udid,productId,showType,0),"/kkb/set_data");
             getData(showType);
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
-    }
-    private void  getData(int showType) throws JSONException {
-       showData(insider.sendPost(insider.makeJsonData(udid,productId,showType,0),"/kkb/get_data"));
     }
 
-    private void showData(String result){
-        Toast.makeText(currenActivity,result,Toast.LENGTH_LONG).show();
-
+    public void showData(String result){
+        if(result != "0"){
+            Toast.makeText(currenActivity,"Şu anda bu ürüne " + result + " kişi bakıyor.", Toast.LENGTH_LONG).show();
+        }
     }
+    private void  getData(int showType) throws JSONException, UnsupportedEncodingException {
+
+        insider.BackgroundSender(insider.makeJsonData(udid,productId,showType,0),"/kkb/get_data");
+    }
+
     public void kkbStop(){
         try {
-            Long session_duration = System.currentTimeMillis() - startTime;
-            insider.sendPost(insider.makeJsonData(udid,productId,showTypeDefault,session_duration),"/kkb/update_data");
+            Long session_duration = (System.currentTimeMillis() - startTime)/1000;
+            insider.BackgroundSender(insider.makeJsonData(udid,productId,showTypeDefault,session_duration),"/kkb/update_data");
         }catch (Exception e){
             e.printStackTrace();
         }

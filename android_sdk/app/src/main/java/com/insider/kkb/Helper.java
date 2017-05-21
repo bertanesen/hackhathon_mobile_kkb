@@ -3,8 +3,6 @@ package com.insider.kkb;
 import android.app.Activity;
 import android.provider.Settings;
 
-import java.util.ArrayList;
-
 /**
  * Created by ip on 20-May-17.
  */

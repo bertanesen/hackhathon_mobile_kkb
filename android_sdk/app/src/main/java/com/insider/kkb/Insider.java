@@ -1,21 +1,19 @@
 package com.insider.kkb;
 
-import android.util.Log;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
-
-
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+
+import static com.insider.kkb.InsiderHack.insdr;
 
 
 /**
@@ -24,50 +22,34 @@ import java.io.InputStreamReader;
 
 public class Insider extends Helper{
 
-    public static String sendPost(JSONObject paramaters,String urlParamter){
-        InputStream inputStream = null;
-        String result = "";
-        String url = "http://9ee6fdf5.ngrok.io" + urlParamter;
-            try {
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(url);
-                String json = "";
-                json = paramaters.toString();
-                StringEntity se = new StringEntity(json);
-                httpPost.setEntity(se);
-                httpPost.setHeader("Accept", "application/json");
-                httpPost.setHeader("Content-type", "application/json");
-                HttpResponse httpResponse = httpclient.execute(httpPost);
-                inputStream = httpResponse.getEntity().getContent();
-                if(inputStream != null)
-                    result = convertInputStreamToString(inputStream);
-                else
-                    result = "Did not work!";
-
-            } catch (Exception e) {
-                e.printStackTrace();
+    public void BackgroundSender(JSONObject params, String linkParam) throws UnsupportedEncodingException {
+        final JSONObject requestParams = params;
+        String url = "http://c44e795d.ngrok.io" + linkParam;
+        AsyncHttpClient client = new AsyncHttpClient();
+        StringEntity entity = new StringEntity(requestParams.toString());
+        System.out.println(params);
+        client.post(currenActivity, url, entity, "application/json", new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                System.out.println(responseString);
             }
-         return result;
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                if (statusCode ==200){
+                    try {
+                        System.out.println(requestParams);
+                        System.out.println(responseString);
+                        JSONObject response = new JSONObject(responseString);
+                         String count = response.get("count").toString();
+                        if (!count.equals("0")){
+                           insdr.showData(count);
+                       }
+                    }catch (Exception e){e.printStackTrace();}
+            }
+        }});
 
     }
-
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while((line = bufferedReader.readLine()) != null)
-            result += line;
-
-        inputStream.close();
-        return result;
-
-    }
-
-
-
-
-
-    // Map<String, String> dictionary = new HashMap<String, String>();
 
     public JSONObject makeJsonData(String udid,String production_id,int showType,long sessionDuration  ) {
         JSONObject json = new JSONObject();
@@ -81,4 +63,5 @@ public class Insider extends Helper{
         }
         return json;
     }
+
 }
