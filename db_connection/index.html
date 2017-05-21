@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+window.onload = function () {
+$.ajax({
+    url : "http://c44e795d.ngrok.io/kkb/get_data",
+    "headers": {
+        "content-type": "application/json"
+    },
+    type: "POST",
+    data : JSON.stringify({
+	"show_type":24,
+	"product_id":"qsadqwdsa"
+}),
+    done: function(data, textStatus, jqXHR)
+    {
+    console.log(data)
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+
+    }
+});
+	var chart = new CanvasJS.Chart("chartContainer", {
+		title:{
+			text: "EN COK BAKILAN 5 URUN"
+		},
+		data: [
+		{
+			// types can be "doughnut", "line", "splineArea", "scatter", "column"
+			type: "pie",
+			dataPoints: [
+				{ label: "qsadqwdsa",  y: 3  },
+				{ label: "BDWD8424DW", y: 15  },
+				{ label: "efwfewfewfew", y: 25  },
+				{ label: "213-1233131",  y: 30  },
+				{ label: "dfbfsgWWW",  y: 28  }
+			]
+		}
+		]
+	});
+	chart.render();
+
+}
+</script>
+</head>
+<body>
+<a href="http://sppanel.sociaplus.com/?s=partner&t=default"><img src="http://panel.sociaplus.com/images/site/logo-transparent.png" align="middle" alt="Insider" style="width:250px;height:110px;">
+<div id="chartContainer" style="height: 600px; width: 90%;"></div>
+</body>
+</html>
