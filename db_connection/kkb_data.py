@@ -20,24 +20,23 @@ class DatabaseHelper(object):
 
 
     def kkb_getter(self, product_id,show_type):
-            if show_type == 0:
-                sql = "SELECT * from kkb_data where product_id = '{prod_id}' and  is_active=1".format(prod_id=product_id)
-                db = self.db_config("mydb")
-                cursor = db.cursor()
-                cursor.execute(sql)
-                row = cursor.rowcount
-                if int(row) == 0:
-                    return json.dumps({'Error' : 'No user Found'})
-                return int(row)
-            else:
-                year = datetime.datetime.now().strftime('%Y')
-                month = datetime.datetime.now().strftime('%m')
-                day = datetime.datetime.now().strftime('%d')
-                key = "{}-{}_{}_{}".format(product_id, year, month, day)
-                return RedisHelper().redis_init().get(key)
+        if show_type == 0:
+            sql = "SELECT * from kkb_data where product_id = '{prod_id}' and  is_active=1".format(prod_id=product_id)
+            db = self.db_config("mydb")
+            cursor = db.cursor()
+            cursor.execute(sql)
+            row = cursor.rowcount
+            if int(row) == 0:
+                return json.dumps({'Error' : 'No user Found'})
+            return int(row)
+        else:
+            year = datetime.datetime.now().strftime('%Y')
+            month = datetime.datetime.now().strftime('%m')
+            day = datetime.datetime.now().strftime('%d')
+            key = "{}-{}_{}_{}".format(product_id, year, month, day)
+            return RedisHelper().redis_init().get(key)
 
     def kkb_update(self, udid, product_id, session_duration):
-        try:
             time_now =datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
             sql = "UPDATE `kkb_data` SET `session_duration` = {session_d}, is_active = 0, updated_date = '{updated}' " \
@@ -50,8 +49,6 @@ class DatabaseHelper(object):
             cursor = db.cursor()
             cursor.execute(sql)
             db.commit()
-        except:
-            raise Exception("Update Function Error")
 
 
 
