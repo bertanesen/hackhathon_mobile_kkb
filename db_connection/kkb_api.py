@@ -20,7 +20,6 @@ def kkb_set_api():
             return json.dumps({"count":"0"})
 
 @app.route('/kkb/get_data', methods=['POST'])
-@cross_origin(origin='localhost',headers=['Content- Type','Authorization'])
 def kkb_get_api():
     if request.method == 'POST':
         content = request.get_json()

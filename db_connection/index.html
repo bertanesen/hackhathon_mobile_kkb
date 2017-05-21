@@ -17,7 +17,6 @@ $.ajax({
 }),
     done: function(data, textStatus, jqXHR)
     {
-    console.log(data)
     },
     error: function (jqXHR, textStatus, errorThrown)
     {
@@ -33,11 +32,11 @@ $.ajax({
 			// types can be "doughnut", "line", "splineArea", "scatter", "column"
 			type: "pie",
 			dataPoints: [
-				{ label: "qsadqwdsa",  y: 3  },
-				{ label: "BDWD8424DW", y: 15  },
-				{ label: "efwfewfewfew", y: 25  },
-				{ label: "213-1233131",  y: 30  },
-				{ label: "dfbfsgWWW",  y: 28  }
+				{label: "http://www.dimasword.com/demo/ecommerce/api/get-menu-detail.php?accesskey=12345&menu_id=64", y:3},
+				{label: "http://www.dimasword.com/demo/ecommerce/api/get-menu-detail.php?accesskey=12345&menu_id=65", y:15},
+				{label: "http://www.dimasword.com/demo/ecommerce/api/get-menu-detail.php?accesskey=12345&menu_id=66", y:25},
+				{label: "http://www.dimasword.com/demo/ecommerce/api/get-menu-detail.php?accesskey=12345&menu_id=69", y:30},
+				{label: "http://www.dimasword.com/demo/ecommerce/api/get-menu-detail.php?accesskey=12345&menu_id=48", y:28}
 			]
 		}
 		]
@@ -48,7 +47,9 @@ $.ajax({
 </script>
 </head>
 <body>
-<a href="http://sppanel.sociaplus.com/?s=partner&t=default"><img src="http://panel.sociaplus.com/images/site/logo-transparent.png" align="middle" alt="Insider" style="width:250px;height:110px;">
+<a href="http://sppanel.sociaplus.com/?s=partner&t=default">
+    <img src="http://panel.sociaplus.com/images/site/logo-transparent.png"
+         align="middle" alt="Insider" style="width:250px;height:110px;">
 <div id="chartContainer" style="height: 600px; width: 90%;"></div>
 </body>
 </html>

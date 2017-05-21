@@ -10,7 +10,6 @@ class DatabaseHelper(object):
         return db
 
     def kkb_setter(self, udid, product_id):
-
             sql = "INSERT INTO `kkb_data` (`udid`, `product_id`) VALUES " \
                   "('{udid}', '{pid}') ".format(udid=udid, pid= product_id)
             db = self.db_config("mydb")
